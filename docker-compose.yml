@@ -1,22 +1,16 @@
-version: '3.8'
-
+version: "3.9"
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: jovoco_postgres
+  db:
+    image: postgres:17
+    container_name: postgres_local
     environment:
-      POSTGRES_USER: jovoco_user
-      POSTGRES_PASSWORD: jovoco_password
-      POSTGRES_DB: jovoco_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: mydb
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U jovoco_user"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  pgdata:
