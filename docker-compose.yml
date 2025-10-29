@@ -12,5 +12,34 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend_local
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: admin
+      DB_PASSWORD: admin123
+      DB_NAME: mydb
+    depends_on:
+      - db
+    volumes:
+      - ./backend/src:/app/src
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_local
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
 volumes:
   pgdata:
