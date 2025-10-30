@@ -118,7 +118,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     formatDate(date: string): string {
-        return new Date(date).toLocaleDateString('fr-FR', {
+        return new Date(date).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
@@ -126,14 +126,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     deleteOrder(orderId: string): void {
-        if (confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) {
+        if (confirm('Are you sure you want to delete this order?')) {
             this.http.delete(`${this.apiUrl}/orders/${orderId}`).subscribe({
                 next: () => {
                     this.orders = this.orders.filter(o => o.orderId !== orderId);
                     this.selectedOrder = null;
                 },
                 error: (err) => {
-                    this.error = 'Erreur lors de la suppression';
+                    this.error = 'Error deleting order';
                     console.error(err);
                 }
             });
@@ -155,14 +155,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     clearCart(): void {
-        if (confirm('Êtes-vous sûr de vouloir vider le panier ?')) {
+        if (confirm('Are you sure you want to clear your cart?')) {
             // this.orderService.clearCart();
         }
     }
 
     checkout(): void {
         if (this.cartItems.length === 0) {
-            this.error = 'Votre panier est vide';
+            this.error = 'Your cart is empty';
             return;
         }
         this.orderService.checkout();

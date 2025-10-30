@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
@@ -40,7 +41,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private userService: UserService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private http: HttpClient
   ) { }
 
   ngOnInit(): void {
@@ -91,11 +93,18 @@ export class MainComponent implements OnInit, OnDestroy {
 
   onSearchInput(): void {
     if (this.searchQuery.trim()) {
-      const query = this.searchQuery.toLowerCase();
-      this.suggestions = this.allSuggestions.filter(s =>
-        s.toLowerCase().includes(query)
-      );
-      this.showSuggestions = this.suggestions.length > 0;
+      // Fetch from API
+      this.http.get<any[]>(`http://localhost:3000/products/search?q=${this.searchQuery}`).subscribe({
+        next: (results) => {
+          this.suggestions = results.map(p => p.name);
+          this.showSuggestions = this.suggestions.length > 0;
+        },
+        error: (err) => {
+          console.error('Search error:', err);
+          this.suggestions = [];
+          this.showSuggestions = false;
+        }
+      });
     } else {
       this.suggestions = [];
       this.showSuggestions = false;

@@ -16,7 +16,7 @@ export const MAIN_ROUTES: Routes = [
       { path: 'orders', component: OrdersComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'home', component: HomeComponent },
-      { path: '', redirectTo: 'catalog', pathMatch: 'full' }
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   }
 ];

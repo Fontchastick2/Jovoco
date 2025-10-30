@@ -8,7 +8,7 @@
       <div class="search-bar">
         <div class="search-input-wrapper">
           <input type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()" (keydown)="onSearchKeydown($event)"
-            (blur)="closeSuggestions()" placeholder="Rechercher un produit...">
+            (blur)="closeSuggestions()" placeholder="Search products...">
           <button class="search-btn" (click)="onSearch()">
             <mat-icon>search</mat-icon>
           </button>

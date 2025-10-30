@@ -1,24 +1,8 @@
 <div class="orders-container">
-  <!-- Breadcrumb -->
-  <div class="breadcrumb">
-    <a href="/main/home">Home</a>
-    <span>/</span>
-    <span>My Cart & Orders</span>
-  </div>
 
   <!-- Main Content -->
   <div class="main-content">
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab-btn" [class.active]="activeTab === 'cart'" (click)="activeTab = 'cart'">
-        <mat-icon>shopping_cart</mat-icon>
-        Shopping Cart ({{ cartItems.length }})
-      </button>
-      <button class="tab-btn" [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'">
-        <mat-icon>shopping_bag</mat-icon>
-        My Orders ({{ orders.length }})
-      </button>
-    </div>
+
 
     <!-- Cart Section -->
     <div class="orders-section" *ngIf="activeTab === 'cart'">
@@ -123,14 +107,14 @@
       </div>
 
       <div *ngIf="loading" class="loading">
-        <p>Chargement des commandes...</p>
+        <p>Loading orders...</p>
       </div>
 
       <div *ngIf="!loading && orders.length > 0" class="orders-list">
         <div *ngFor="let order of orders" class="order-card">
           <div class="order-header" (click)="selectOrder(order)">
             <div class="order-info">
-              <h3>Commande #{{ order.orderId | slice: 0: 8 }}</h3>
+              <h3>Order #{{ order.orderId | slice: 0: 8 }}</h3>
               <p class="order-date">{{ formatDate(order.createdAt) }}</p>
             </div>
             <div class="order-status">
