@@ -132,13 +132,13 @@ export class AdminAddProductComponent implements OnInit {
     }
 
     fillFormWithRandomData(): void {
-        const categories = ['Électronique', 'Vêtements', 'Livres', 'Maison', 'Sports', 'Jouets'];
+        const categories = ['Electronics', 'Accessories', 'Computers', 'Phones'];
         const adjectives = ['Premium', 'Deluxe', 'Pro', 'Ultra', 'Elite', 'Classic'];
-        const nouns = ['Produit', 'Article', 'Item', 'Objet', 'Équipement', 'Accessoire'];
+        const nouns = ['Product', 'Device', 'Gadget', 'Equipment', 'Tool', 'Accessory'];
 
         this.productForm.patchValue({
             name: `${adjectives[Math.floor(Math.random() * adjectives.length)]} ${nouns[Math.floor(Math.random() * nouns.length)]} ${Math.floor(Math.random() * 1000)}`,
-            description: `Description du produit généré aléatoirement. Ceci est un excellent produit avec de nombreuses fonctionnalités intéressantes.`,
+            description: `Randomly generated product description. This is an excellent product with many interesting features and great quality.`,
             price: Math.floor(Math.random() * 500) + 10,
             stockQuantity: Math.floor(Math.random() * 100) + 1,
             category: categories[Math.floor(Math.random() * categories.length)],
