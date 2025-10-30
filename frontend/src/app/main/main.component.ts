@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -11,10 +14,12 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent {
+export class MainComponent implements OnInit, OnDestroy {
   searchQuery = '';
   suggestions: string[] = [];
   showSuggestions = false;
+  isAuthenticated = false;
+  private authSubscription: Subscription | null = null;
   private allSuggestions = [
     'Laptop',
     'Smartphone',
@@ -28,7 +33,40 @@ export class MainComponent {
     'Charger'
   ];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private userService: UserService
+  ) { }
+
+  ngOnInit(): void {
+    this.authService.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+      if (isAuth) {
+        this.loadUserData();
+      }
+    });
+  }
+
+  private loadUserData(): void {
+    const userId = this.authService.getUserIdFromToken();
+    if (userId) {
+      this.userService.getUser(userId).subscribe({
+        next: (user) => {
+          this.userService.setCurrentUser(user);
+        },
+        error: (err) => {
+          console.error('Error loading user data:', err);
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+  }
 
   onSearch(): void {
     if (this.searchQuery.trim()) {

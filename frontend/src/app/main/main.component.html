@@ -27,10 +27,17 @@
           <mat-icon>shopping_cart</mat-icon>
           <span>Orders</span>
         </a>
-        <a routerLink="/auth/sign-in" class="nav-link">
+        @if (isAuthenticated) {
+        <a href="/main/profile" class="nav-link">
+          <mat-icon>person</mat-icon>
+          <span>Account</span>
+        </a>
+        } @else {
+        <a href="/auth/sign-in" class="nav-link">
           <mat-icon>person</mat-icon>
           <span>Login</span>
         </a>
+        }
       </nav>
     </div>
   </header>

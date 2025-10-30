@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -28,6 +29,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     constructor(
         private http: HttpClient,
         private router: Router,
+        private authService: AuthService,
         @Inject(PLATFORM_ID) private platformId: Object
     ) { }
 
@@ -76,9 +78,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
         }).subscribe({
             next: (response: any) => {
                 console.log('Inscription réussie:', response);
-                if (response.token && isPlatformBrowser(this.platformId)) {
-                    localStorage.setItem('authToken', response.token);
-                    localStorage.setItem('user', JSON.stringify(response.user));
+                if (response.token) {
+                    this.authService.login(response.token, response.user);
                 }
                 this.loading = false;
                 this.router.navigate(['/main/catalog']);
