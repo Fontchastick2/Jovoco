@@ -1,0 +1,121 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title animate-fade-in">Welcome to JOVOCO</h1>
+      <p class="hero-subtitle animate-fade-in-delay">Discover the latest tech products with amazing deals</p>
+      <button class="btn btn-primary btn-lg animate-fade-in-delay-2" (click)="scrollToProducts()">
+        <mat-icon>arrow_downward</mat-icon>
+        Shop Now
+      </button>
+    </div>
+    <div class="hero-background">
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="featured-section">
+    <div class="section-header">
+      <h2>Featured Products</h2>
+      <p>Check out our best sellers</p>
+    </div>
+    <div class="featured-grid">
+      <div *ngFor="let product of featuredProducts; let i = index" class="featured-card animate-slide-up" [style.animation-delay]="(i * 0.1) + 's'">
+        <div class="card-image">
+          <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+          <div class="card-badge">Featured</div>
+        </div>
+        <div class="card-content">
+          <h3>{{ product.name }}</h3>
+          <p class="category">{{ product.category }}</p>
+          <div class="card-footer">
+            <span class="price">{{ formatPrice(product.price) }}</span>
+            <button class="btn-icon" (click)="addToCart(product)" matTooltip="Add to cart">
+              <mat-icon>shopping_cart</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section">
+    <div class="section-header">
+      <h2>Shop by Category</h2>
+    </div>
+    <div class="categories-grid">
+      <div *ngFor="let category of categories; let i = index" class="category-card animate-scale-in" [style.animation-delay]="(i * 0.15) + 's'">
+        <div class="category-icon">
+          <mat-icon>{{ category.icon }}</mat-icon>
+        </div>
+        <h3>{{ category.name }}</h3>
+        <p>{{ category.count }} products</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promo Banner -->
+  <section class="promo-banner">
+    <div class="promo-content">
+      <h2>Special Offer</h2>
+      <p>Get up to 50% off on selected items</p>
+      <button class="btn btn-secondary">View Deals</button>
+    </div>
+    <div class="promo-image">
+      <div class="promo-shape"></div>
+    </div>
+  </section>
+
+  <!-- All Products Section -->
+  <section class="products-section" #productsSection>
+    <div class="section-header">
+      <h2>All Products</h2>
+      <div class="filter-bar">
+        <select [(ngModel)]="selectedCategory" (change)="filterProducts()" class="filter-select">
+          <option value="">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="products-grid">
+      <div *ngFor="let product of filteredProducts; let i = index" class="product-card animate-fade-in" [style.animation-delay]="(i * 0.05) + 's'">
+        <div class="product-image-wrapper">
+          <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+          <div class="product-overlay">
+            <button class="btn btn-primary btn-sm" (click)="addToCart(product)">
+              <mat-icon>shopping_cart</mat-icon>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p class="product-category">{{ product.category }}</p>
+          <div class="product-footer">
+            <span class="product-price">{{ formatPrice(product.price) }}</span>
+            <button class="btn-icon" (click)="toggleWishlist(product)">
+              <mat-icon [class.favorited]="isInWishlist(product.productId)">favorite</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stat-card" *ngFor="let stat of stats; let i = index" [style.animation-delay]="(i * 0.1) + 's'">
+      <div class="stat-icon">
+        <mat-icon>{{ stat.icon }}</mat-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stat.value }}</h3>
+        <p>{{ stat.label }}</p>
+      </div>
+    </div>
+  </section>
+</div>

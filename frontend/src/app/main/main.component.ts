@@ -121,4 +121,8 @@ export class MainComponent implements OnInit, OnDestroy {
       this.showSuggestions = false;
     }, 100);
   }
+
+  navigateToHome(): void {
+    this.router.navigate(['/main/home']);
+  }
 }
