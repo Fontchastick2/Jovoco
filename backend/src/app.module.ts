@@ -14,7 +14,7 @@ import { ProductsModule } from './products/products.module';
       username: process.env.DB_USERNAME || 'admin',
       password: process.env.DB_PASSWORD || 'admin123',
       database: process.env.DB_NAME || 'mydb',
-      entities: ['src/**/*.entity.ts'],
+      entities: ['dist/**/*.entity.js'],
       synchronize: true,
       logging: true,
     }),

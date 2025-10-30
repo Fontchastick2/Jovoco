@@ -1,0 +1,85 @@
+<div class="signup-container">
+  <div class="signup-wrapper">
+    <!-- Left Section -->
+    <div class="left-section">
+      <div class="content">
+        <h1>Bienvenue</h1>
+        <p>Créez votre compte administrateur pour accéder à la plateforme de gestion Jovoco.</p>
+      </div>
+      <div class="decoration"></div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+      <div class="form-container">
+        <h2>CRÉER UN COMPTE</h2>
+
+        <div *ngIf="error" class="alert alert-error">
+          {{ error }}
+        </div>
+
+        <div *ngIf="success" class="alert alert-success">
+          {{ success }}
+        </div>
+
+        <form (ngSubmit)="signup()">
+          <div class="form-group">
+            <input
+              type="text"
+              [(ngModel)]="name"
+              name="name"
+              placeholder="Nom complet"
+              class="input-field"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              placeholder="Email"
+              class="input-field"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="password"
+              [(ngModel)]="password"
+              name="password"
+              placeholder="Mot de passe"
+              class="input-field"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="password"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirmer le mot de passe"
+              class="input-field"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="submit-btn"
+            [disabled]="loading"
+          >
+            {{ loading ? 'Création en cours...' : 'S\'INSCRIRE' }}
+          </button>
+        </form>
+
+        <div class="login-link">
+          <p>Vous avez déjà un compte? <a routerLink="/admin/login">Se connecter</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

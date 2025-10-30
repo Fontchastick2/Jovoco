@@ -13,7 +13,7 @@ export interface AdminUser {
     providedIn: 'root'
 })
 export class AdminService {
-    private apiUrl = 'http://localhost:3322';
+    private apiUrl = 'http://localhost:3000';
     private currentAdmin$ = new BehaviorSubject<AdminUser | null>(null);
 
     constructor(private http: HttpClient) { }
