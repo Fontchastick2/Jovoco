@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface Product {
     productId: string;
@@ -38,8 +39,8 @@ export interface Order {
 export class OrderService {
     private readonly API_URL = 'http://localhost:3000/orders';
     private currentOrder: Order | null = null;
-
     private orderSubject = new BehaviorSubject<OrderItem[]>([]);
+    checkoutSuccess$ = new BehaviorSubject<boolean>(false);
     public order$ = this.orderSubject.asObservable();
 
     private cartCountSubject = new BehaviorSubject<number>(0);
@@ -47,7 +48,8 @@ export class OrderService {
 
     constructor(
         private http: HttpClient,
-        private authService: AuthService
+        private authService: AuthService,
+        private snackBar: MatSnackBar
     ) {
         this.loadOrder();
     }
@@ -166,9 +168,11 @@ export class OrderService {
                 console.log('Order checked out:', this.currentOrder?.orderId);
                 this.currentOrder = response;
                 this.orderSubject.next(response.items || []);
+                this.checkoutSuccess$.next(true);
             },
             error: (err) => {
                 console.error('Error checking out order:', err);
+                this.checkoutSuccess$.next(false);
             }
         });
     }

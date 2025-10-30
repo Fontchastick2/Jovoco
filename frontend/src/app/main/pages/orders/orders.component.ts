@@ -44,6 +44,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.loadOrders();
         this.subscribeToCart();
+        this.subscribeToCheckout();
+    }
+
+    subscribeToCheckout(): void {
+        this.orderService.checkoutSuccess$.subscribe(success => {
+            if (success) {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        });
     }
 
     ngOnDestroy(): void {
