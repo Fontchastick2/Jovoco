@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -48,7 +48,7 @@ export class AdminProductsListComponent implements OnInit {
 
     private apiUrl = 'http://localhost:3000';
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) { }
 
     ngOnInit(): void {
         this.loadProducts();
@@ -88,7 +88,11 @@ export class AdminProductsListComponent implements OnInit {
         if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
             this.http.delete(`${this.apiUrl}/products/${productId}`).subscribe({
                 next: () => {
-                    this.loadProducts();
+                    setTimeout(() => {
+                        this.allProducts = this.allProducts.filter(p => p.productId !== productId);
+                        this.updateDisplayedProducts();
+                        this.cdr.markForCheck();
+                    }, 0);
                 },
                 error: (err) => {
                     this.error = 'Erreur lors de la suppression';
