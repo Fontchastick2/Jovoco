@@ -40,13 +40,7 @@ export class AuthService {
         return this.isAuthenticatedSubject.value;
     }
 
-    getUser(): any {
-        if (isPlatformBrowser(this.platformId)) {
-            const user = localStorage.getItem('user');
-            return user ? JSON.parse(user) : null;
-        }
-        return null;
-    }
+
 
     getUserIdFromToken(): string | null {
         if (isPlatformBrowser(this.platformId)) {

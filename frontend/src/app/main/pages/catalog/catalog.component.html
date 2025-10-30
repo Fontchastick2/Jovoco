@@ -93,11 +93,11 @@
           </div>
           <p class="price">{{ formatPrice(product.price) }}</p>
           @if (product.stockQuantity > 0) {
-          <button class="btn btn-primary" (click)="addToCart(product)">
+          <button class="btn btn-primary" (click)="addToCart(product); $event.stopPropagation()">
             Ajouter au panier
           </button>
           } @else {
-          <button class="btn btn-wishlist" (click)="addToWishlist(product)">
+          <button class="btn btn-wishlist" (click)="addToWishlist(product); $event.stopPropagation()">
             <mat-icon>favorite</mat-icon>
             Add to Wishlist
           </button>

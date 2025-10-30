@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { OrderItem } from './order-item.entity';
 
 @Entity('orders')
 export class Order {
@@ -6,22 +7,13 @@ export class Order {
   orderId: string;
 
   @Column({ type: 'varchar', length: 255 })
-  customerName: string;
+  userId: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  customerEmail: string;
+  @Column({ type: 'varchar', length: 50, default: 'in_cart' })
+  status: string; // in_cart, pending, confirmed, shipped, delivered, cancelled
 
-  @Column({ type: 'text', nullable: true })
-  customerAddress: string;
-
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  totalAmount: number;
-
-  @Column({ type: 'varchar', length: 50, default: 'pending' })
-  status: string; // pending, confirmed, shipped, delivered, cancelled
-
-  @Column({ type: 'simple-array', nullable: true })
-  items: string[]; // JSON array of product IDs and quantities
+  @OneToMany(() => OrderItem, (item) => item.order, { cascade: true, eager: true })
+  items: OrderItem[];
 
   @CreateDateColumn()
   createdAt: Date;

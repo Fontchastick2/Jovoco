@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-main',
@@ -19,7 +20,9 @@ export class MainComponent implements OnInit, OnDestroy {
   suggestions: string[] = [];
   showSuggestions = false;
   isAuthenticated = false;
+  cartCount = 0;
   private authSubscription: Subscription | null = null;
+  private cartCountSubscription: Subscription | null = null;
   private allSuggestions = [
     'Laptop',
     'Smartphone',
@@ -36,7 +39,8 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private orderService: OrderService
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +49,11 @@ export class MainComponent implements OnInit, OnDestroy {
       if (isAuth) {
         this.loadUserData();
       }
+    });
+
+    // Subscribe to cart count
+    this.cartCountSubscription = this.orderService.cartCount$.subscribe(count => {
+      this.cartCount = count;
     });
   }
 
@@ -65,6 +74,9 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.cartCountSubscription) {
+      this.cartCountSubscription.unsubscribe();
     }
   }
 

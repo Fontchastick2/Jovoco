@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
+import { OrderService } from '../../../services/order.service';
 
 interface Product {
     productId: string;
@@ -42,7 +43,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
     private subscription: Subscription | null = null;
     private queryParamSubscription: Subscription | null = null;
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private cd: ChangeDetectorRef) { }
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private cd: ChangeDetectorRef,
+        private orderService: OrderService
+    ) { }
 
     ngOnInit(): void {
         // Écouter les changements de query params
@@ -132,8 +138,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }
 
     addToCart(product: Product): void {
-        console.log('Ajouter au panier:', product);
-        // À implémenter
+        this.orderService.addOrderItem(product);
     }
 
     addToWishlist(product: Product): void {

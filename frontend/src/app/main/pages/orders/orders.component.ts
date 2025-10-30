@@ -1,16 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
-
-interface OrderItem {
-    productId: string;
-    productName: string;
-    quantity: number;
-    price: number;
-    imageUrl?: string;
-}
+import { OrderService, OrderItem } from '../../../services/order.service';
+import { Subscription } from 'rxjs';
 
 interface Order {
     orderId: string;
@@ -30,18 +24,39 @@ interface Order {
     templateUrl: './orders.component.html',
     styleUrls: ['./orders.component.css']
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
     orders: Order[] = [];
+    cartItems: OrderItem[] = [];
     loading = false;
     error = '';
     selectedOrder: Order | null = null;
+    activeTab: 'cart' | 'orders' = 'cart';
 
     private apiUrl = 'http://localhost:3000';
+    private cartSubscription: Subscription | null = null;
 
-    constructor(private http: HttpClient, private cd: ChangeDetectorRef) { }
+    constructor(
+        private http: HttpClient,
+        private cd: ChangeDetectorRef,
+        private orderService: OrderService
+    ) { }
 
     ngOnInit(): void {
         this.loadOrders();
+        this.subscribeToCart();
+    }
+
+    ngOnDestroy(): void {
+        if (this.cartSubscription) {
+            this.cartSubscription.unsubscribe();
+        }
+    }
+
+    private subscribeToCart(): void {
+        this.cartSubscription = this.orderService.order$.subscribe(items => {
+            this.cartItems = items;
+            this.cd.markForCheck();
+        });
     }
 
     loadOrders(): void {
@@ -123,5 +138,35 @@ export class OrdersComponent implements OnInit {
                 }
             });
         }
+    }
+
+    removeFromCart(productId: string): void {
+        // this.orderService.removeFromCart(productId);
+    }
+
+    updateQuantity(productId: string, quantity: number): void {
+        if (quantity > 0) {
+            // this.orderService.updateQuantity(productId, quantity);
+        }
+    }
+
+    getCartTotal(): number {
+        // return this.orderService.getCartTotal();
+        return 0;
+    }
+
+    clearCart(): void {
+        if (confirm('Êtes-vous sûr de vouloir vider le panier ?')) {
+            // this.orderService.clearCart();
+        }
+    }
+
+    checkout(): void {
+        if (this.cartItems.length === 0) {
+            this.error = 'Le panier est vide';
+            return;
+        }
+        // TODO: Implémenter la logique de checkout
+        console.log('Checkout:', this.cartItems);
     }
 }
