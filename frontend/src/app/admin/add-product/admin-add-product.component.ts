@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -29,20 +29,34 @@ export class AdminAddProductComponent implements OnInit {
     loading = false;
     error = '';
     success = '';
+    isEditMode = false;
+    productId: string | null = null;
 
     private apiUrl = 'http://localhost:3000';
 
     constructor(
         private http: HttpClient,
         private router: Router,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
         this.initializeForm();
-        setTimeout(() => {
-            this.fillFormWithRandomData();
-        }, 1000);
+        
+        // Vérifier si on est en mode édition
+        this.route.params.subscribe(params => {
+            if (params['id']) {
+                this.isEditMode = true;
+                this.productId = params['id'];
+                this.loadProduct(params['id']);
+            } else {
+                // Mode création : préremplissage aléatoire après 1 seconde
+                setTimeout(() => {
+                    this.fillFormWithRandomData();
+                }, 1000);
+            }
+        });
     }
 
     initializeForm(): void {
@@ -56,6 +70,18 @@ export class AdminAddProductComponent implements OnInit {
         });
     }
 
+    loadProduct(productId: string): void {
+        this.http.get(`${this.apiUrl}/products/${productId}`).subscribe({
+            next: (product: any) => {
+                this.productForm.patchValue(product);
+            },
+            error: (err) => {
+                this.error = 'Erreur lors du chargement du produit';
+                console.error(err);
+            }
+        });
+    }
+
     addProduct(): void {
         if (this.productForm.invalid) {
             this.error = 'Veuillez remplir les champs obligatoires correctement';
@@ -66,18 +92,35 @@ export class AdminAddProductComponent implements OnInit {
         this.error = '';
         this.success = '';
 
-        this.http.post(`${this.apiUrl}/products`, this.productForm.value).subscribe({
-            next: () => {
-                this.success = 'Produit créé avec succès! Redirection...';
-                setTimeout(() => {
-                    this.router.navigate(['/admin/dashboard']);
-                }, 2000);
-            },
-            error: (err) => {
-                this.error = err.error?.message || 'Erreur lors de la création du produit';
-                this.loading = false;
-            }
-        });
+        if (this.isEditMode && this.productId) {
+            // Mode édition : PUT
+            this.http.put(`${this.apiUrl}/products/${this.productId}`, this.productForm.value).subscribe({
+                next: () => {
+                    this.success = 'Produit mis à jour avec succès! Redirection...';
+                    setTimeout(() => {
+                        this.router.navigate(['/admin/dashboard/products']);
+                    }, 2000);
+                },
+                error: (err) => {
+                    this.error = err.error?.message || 'Erreur lors de la mise à jour du produit';
+                    this.loading = false;
+                }
+            });
+        } else {
+            // Mode création : POST
+            this.http.post(`${this.apiUrl}/products`, this.productForm.value).subscribe({
+                next: () => {
+                    this.success = 'Produit créé avec succès! Redirection...';
+                    setTimeout(() => {
+                        this.router.navigate(['/admin/dashboard/products']);
+                    }, 2000);
+                },
+                error: (err) => {
+                    this.error = err.error?.message || 'Erreur lors de la création du produit';
+                    this.loading = false;
+                }
+            });
+        }
     }
 
     goBack(): void {

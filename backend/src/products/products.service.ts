@@ -11,8 +11,10 @@ export class ProductsService {
   ) {}
 
   async create(product: Partial<Product>): Promise<Product> {
+    console.log('Creating product with data:', product);
     const newProduct = this.productsRepository.create(product);
-    return this.productsRepository.save(newProduct);
+    const savedProduct = await this.productsRepository.save(newProduct);
+    return this.findById(savedProduct.productId) as Promise<Product>;
   }
 
   async findAll(): Promise<Product[]> {
@@ -34,6 +36,11 @@ export class ProductsService {
 
   async updatePrice(productId: string, price: number): Promise<Product | null> {
     await this.productsRepository.update(productId, { price });
+    return this.findById(productId);
+  }
+
+  async update(productId: string, product: Partial<Product>): Promise<Product | null> {
+    await this.productsRepository.update(productId, product);
     return this.findById(productId);
   }
 

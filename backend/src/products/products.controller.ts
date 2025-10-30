@@ -42,6 +42,14 @@ export class ProductsController {
     return this.productsService.updatePrice(productId, body.price);
   }
 
+  @Put(':productId')
+  async update(
+    @Param('productId') productId: string,
+    @Body() product: Partial<Product>,
+  ): Promise<Product | null> {
+    return this.productsService.update(productId, product);
+  }
+
   @Delete(':productId')
   async delete(@Param('productId') productId: string): Promise<void> {
     return this.productsService.delete(productId);

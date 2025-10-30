@@ -21,7 +21,8 @@ export const ADMIN_ROUTES: Routes = [
             path: 'products',
             children: [
               { path: '', component: AdminProductsListComponent },
-              { path: 'add', component: AdminAddProductComponent }
+              { path: 'add', component: AdminAddProductComponent },
+              { path: 'edit/:id', component: AdminAddProductComponent }
             ]
           },
           { path: '', redirectTo: 'users', pathMatch: 'full' }

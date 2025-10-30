@@ -3,7 +3,7 @@
     <!-- Left Section: Form -->
     <div class="form-section">
       <div class="header">
-        <h2>Ajouter un Produit</h2>
+        <h2>{{ isEditMode ? 'Éditer le Produit' : 'Ajouter un Produit' }}</h2>
         <button mat-icon-button (click)="goBack()" matTooltip="Retour">
           <mat-icon>close</mat-icon>
         </button>
@@ -51,7 +51,7 @@
         </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="loading || productForm.invalid" class="full-width">
-          {{ loading ? 'Création en cours...' : 'Créer le produit' }}
+          {{ loading ? (isEditMode ? 'Mise à jour en cours...' : 'Création en cours...') : (isEditMode ? 'Mettre à jour' : 'Créer le produit') }}
         </button>
       </form>
     </div>

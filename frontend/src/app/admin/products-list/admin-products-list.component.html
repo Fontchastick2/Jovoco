@@ -1,7 +1,7 @@
 <div class="products-container">
   <div class="header">
     <h2>Gestion des Produits</h2>
-    <button mat-raised-button color="primary" routerLink="/admin/add-product">
+    <button mat-raised-button color="primary" routerLink="/admin/dashboard/products/add">
       <mat-icon>add</mat-icon>
       Ajouter un produit
     </button>
@@ -69,13 +69,8 @@
     </table>
 
     <!-- Paginator -->
-    <mat-paginator
-      [length]="allProducts.length"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 25, 50]"
-      (page)="onPageChange($event)"
-      aria-label="Select page"
-    ></mat-paginator>
+    <mat-paginator [length]="allProducts.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 50]"
+      (page)="onPageChange($event)" aria-label="Select page"></mat-paginator>
   </div>
 
   <div *ngIf="!loading && allProducts.length === 0" class="no-data">

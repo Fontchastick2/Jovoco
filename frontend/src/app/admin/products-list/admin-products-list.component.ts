@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,10 +11,13 @@ import { HttpClient } from '@angular/common/http';
 interface Product {
     productId: string;
     name: string;
-    category: string;
+    description?: string;
+    category?: string;
     price: number;
     stockQuantity: number;
+    imageUrl?: string;
     createdAt: string;
+    updatedAt?: string;
 }
 
 @Component({
@@ -45,7 +48,7 @@ export class AdminProductsListComponent implements OnInit {
 
     private apiUrl = 'http://localhost:3000';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private router: Router) { }
 
     ngOnInit(): void {
         this.loadProducts();
@@ -96,8 +99,7 @@ export class AdminProductsListComponent implements OnInit {
     }
 
     editProduct(productId: string): void {
-        console.log('Éditer produit:', productId);
-        // À implémenter
+        this.router.navigate(['/admin/dashboard/products/edit', productId]);
     }
 
     formatPrice(price: number): string {
