@@ -61,31 +61,41 @@ export class OrderService {
         }
     }
 
-    addOrderItem(product: any): void {
+    private getCartId(callback: (orderId: string) => void): void {
         const userId = this.authService.getUserIdFromToken();
         if (!userId) {
             console.error('User not authenticated');
             return;
         }
 
-        const newItem: OrderItem = {
-            productId: product.productId,
-            productName: product.name,
-            price: product.price,
-            quantity: 1,
-            imageUrl: product.imageUrl
-        };
-
-        console.log('Adding order item:', newItem);
-        this.http.post(`${this.API_URL}/add-item`, { userId, item: newItem }).subscribe({
-            next: (response: any) => {
-                console.log('Order item added:', product.name);
-                this.currentOrder = response;
-                this.orderSubject.next(response.items || []);
+        console.log('Fetching cart for user:', userId);
+        this.http.get<Order>(`${this.API_URL}/cart/${userId}`).subscribe({
+            next: (cart) => {
+                console.log('Cart fetched:', cart);
+                callback(cart.orderId);
             },
             error: (err) => {
-                console.error('Error adding order item:', err);
+                console.error('Error fetching cart:', err);
             }
+        });
+    }
+
+    addOrderItem(product: any, quantity: number = 1): void {
+        this.getCartId((orderId) => {
+            console.log('Adding item to cart:', product.productId);
+            this.http.post(`${this.API_URL}/${orderId}/add-item`, {
+                productId: product.productId,
+                quantity
+            }).subscribe({
+                next: (response: any) => {
+                    console.log('Order item added:', product.name);
+                    this.currentOrder = response;
+                    this.orderSubject.next(response.items || []);
+                },
+                error: (err) => {
+                    console.error('Error adding order item:', err);
+                }
+            });
         });
     }
 

@@ -41,4 +41,39 @@ export class OrdersService {
   async delete(orderId: string): Promise<void> {
     await this.ordersRepository.delete(orderId);
   }
+
+  async getCart(userId: string): Promise<Order> {
+    // Chercher un order existant avec le status "in_cart"
+    let cart = await this.ordersRepository.findOne({
+      where: { userId, status: 'in_cart' }
+    });
+
+    // Si pas de panier, en créer un
+    if (!cart) {
+      cart = await this.create({
+        userId,
+        status: 'in_cart',
+        items: []
+      });
+    }
+
+    return cart;
+  }
+
+  async addItemToCart(orderId: string, productId: string, quantity: number): Promise<Order | null> {
+    const order = await this.findById(orderId);
+    if (!order) return null;
+
+    // Créer le nouvel item
+    const newItem = {
+      productId,
+      quantity
+    };
+
+    // Ajouter l'item à la liste
+    order.items.push(newItem as any);
+    
+    // Sauvegarder
+    return this.ordersRepository.save(order);
+  }
 }

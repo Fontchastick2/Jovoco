@@ -26,6 +26,19 @@ export class OrdersController {
     return this.ordersService.findByStatus(status);
   }
 
+  @Get('cart/:userId')
+  async getCart(@Param('userId') userId: string): Promise<Order> {
+    return this.ordersService.getCart(userId);
+  }
+
+  @Post(':orderId/add-item')
+  async addItemToCart(
+    @Param('orderId') orderId: string,
+    @Body() body: { productId: string; quantity: number },
+  ): Promise<Order | null> {
+    return this.ordersService.addItemToCart(orderId, body.productId, body.quantity);
+  }
+
   @Put(':orderId')
   async update(
     @Param('orderId') orderId: string,
