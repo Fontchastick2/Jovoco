@@ -20,6 +20,9 @@ export class Product {
   @Column({ type: 'varchar', length: 100, nullable: true })
   category: string;
 
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  imageUrl: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -5,14 +5,24 @@
     </mat-toolbar>
 
     <mat-nav-list>
-      <mat-list-item (click)="navigateTo('users')" [class.active]="currentPage === 'users'">
+      <mat-list-item (click)="navigateTo('/admin/dashboard/users')" class="submenu-item">
         <mat-icon matListItemIcon>people</mat-icon>
         <span matListItemTitle>Utilisateurs</span>
       </mat-list-item>
-      <mat-list-item (click)="navigateTo('products')" [class.active]="currentPage === 'products'">
+      <mat-list-item (click)="toggleProductsSubmenu()" [class.active]="showProductsSubmenu">
         <mat-icon matListItemIcon>shopping_cart</mat-icon>
         <span matListItemTitle>Produits</span>
+        <mat-icon matListItemMeta>{{ showProductsSubmenu ? 'expand_less' : 'expand_more' }}</mat-icon>
       </mat-list-item>
+
+      <div *ngIf="showProductsSubmenu" class="submenu">
+        <mat-list-item (click)="navigateTo('/admin/dashboard/products')" class="submenu-item">
+          <span matListItemTitle>Liste des produits</span>
+        </mat-list-item>
+        <mat-list-item (click)="navigateTo('/admin/dashboard/products/add')" class="submenu-item">
+          <span matListItemTitle>Ajouter un produit</span>
+        </mat-list-item>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -28,8 +38,7 @@
     </mat-toolbar>
 
     <div class="content">
-      <app-admin-users-list *ngIf="currentPage === 'users'"></app-admin-users-list>
-      <app-admin-products-list *ngIf="currentPage === 'products'"></app-admin-products-list>
+      <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

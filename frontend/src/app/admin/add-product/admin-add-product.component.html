@@ -1,0 +1,79 @@
+<div class="add-product-container">
+  <div class="form-wrapper">
+    <!-- Left Section: Form -->
+    <div class="form-section">
+      <div class="header">
+        <h2>Ajouter un Produit</h2>
+        <button mat-icon-button (click)="goBack()" matTooltip="Retour">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="error" class="alert alert-error">
+        {{ error }}
+      </div>
+
+      <div *ngIf="success" class="alert alert-success">
+        {{ success }}
+      </div>
+
+      <form (ngSubmit)="addProduct()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Nom du produit *</mat-label>
+          <input matInput [(ngModel)]="name" name="name" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput [(ngModel)]="description" name="description" rows="4"></textarea>
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Prix *</mat-label>
+            <input matInput type="number" [(ngModel)]="price" name="price" step="0.01" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Stock</mat-label>
+            <input matInput type="number" [(ngModel)]="stockQuantity" name="stockQuantity">
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Catégorie</mat-label>
+          <input matInput [(ngModel)]="category" name="category">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>URL de l'image</mat-label>
+          <input matInput [(ngModel)]="imageUrl" name="imageUrl" placeholder="https://...">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="full-width">
+          {{ loading ? 'Création en cours...' : 'Créer le produit' }}
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Section: Image Preview -->
+    <div class="preview-section">
+      <div class="preview-card">
+        <h3>Aperçu</h3>
+        <div class="image-container">
+          <img *ngIf="imageUrl" [src]="imageUrl" alt="Aperçu du produit" class="product-image">
+          <div *ngIf="!imageUrl" class="no-image">
+            <mat-icon>image</mat-icon>
+            <p>Aucune image</p>
+          </div>
+        </div>
+        <div class="product-info">
+          <h4>{{ name || 'Nom du produit' }}</h4>
+          <p class="category">{{ category || 'Catégorie' }}</p>
+          <p class="price">{{ price ? (price | currency: 'EUR') : '0,00 €' }}</p>
+          <p class="stock">Stock: {{ stockQuantity }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -36,9 +36,10 @@ export class AdminUsersListComponent implements OnInit {
 
   private apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.loadUsers();
   }
 
