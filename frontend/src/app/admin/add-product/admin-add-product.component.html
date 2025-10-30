@@ -3,8 +3,8 @@
     <!-- Left Section: Form -->
     <div class="form-section">
       <div class="header">
-        <h2>{{ isEditMode ? 'Éditer le Produit' : 'Ajouter un Produit' }}</h2>
-        <button mat-icon-button (click)="goBack()" matTooltip="Retour">
+        <h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
+        <button mat-icon-button (click)="goBack()" matTooltip="Back">
           <mat-icon>close</mat-icon>
         </button>
       </div>
@@ -19,7 +19,7 @@
 
       <form [formGroup]="productForm" (ngSubmit)="addProduct()">
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Nom du produit *</mat-label>
+          <mat-label>Product Name *</mat-label>
           <input matInput formControlName="name" required>
         </mat-form-field>
 
@@ -30,7 +30,7 @@
 
         <div class="row">
           <mat-form-field appearance="fill" class="half-width">
-            <mat-label>Prix *</mat-label>
+            <mat-label>Price *</mat-label>
             <input matInput type="number" formControlName="price" step="0.01" required>
           </mat-form-field>
 
@@ -41,17 +41,17 @@
         </div>
 
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Catégorie</mat-label>
+          <mat-label>Category</mat-label>
           <input matInput formControlName="category">
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>URL de l'image</mat-label>
+          <mat-label>Image URL</mat-label>
           <input matInput formControlName="imageUrl" placeholder="https://...">
         </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="loading || productForm.invalid" class="full-width">
-          {{ loading ? (isEditMode ? 'Mise à jour en cours...' : 'Création en cours...') : (isEditMode ? 'Mettre à jour' : 'Créer le produit') }}
+          {{ loading ? (isEditMode ? 'Updating...' : 'Creating...') : (isEditMode ? 'Update' : 'Create Product') }}
         </button>
       </form>
     </div>
@@ -59,18 +59,18 @@
     <!-- Right Section: Image Preview -->
     <div class="preview-section">
       <div class="preview-card">
-        <h3>Aperçu</h3>
+        <h3>Preview</h3>
         <div class="image-container">
-          <img *ngIf="imageUrl" [src]="imageUrl" alt="Aperçu du produit" class="product-image">
+          <img *ngIf="imageUrl" [src]="imageUrl" alt="Product preview" class="product-image">
           <div *ngIf="!imageUrl" class="no-image">
             <mat-icon>image</mat-icon>
-            <p>Aucune image</p>
+            <p>No image</p>
           </div>
         </div>
         <div class="product-info">
-          <h4>{{ productForm.get('name')?.value || 'Nom du produit' }}</h4>
-          <p class="category">{{ productForm.get('category')?.value || 'Catégorie' }}</p>
-          <p class="price">{{ productForm.get('price')?.value ? (productForm.get('price')?.value | currency: 'EUR') : '0,00 €' }}</p>
+          <h4>{{ productForm.get('name')?.value || 'Product Name' }}</h4>
+          <p class="category">{{ productForm.get('category')?.value || 'Category' }}</p>
+          <p class="price">{{ productForm.get('price')?.value ? (productForm.get('price')?.value | currency: 'USD') : '$0.00' }}</p>
           <p class="stock">Stock: {{ productForm.get('stockQuantity')?.value }}</p>
         </div>
       </div>

@@ -1,7 +1,7 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title>Connexion Admin</mat-card-title>
+      <mat-card-title>Admin Login</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -12,7 +12,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Mot de passe</mat-label>
+          <mat-label>Password</mat-label>
           <input matInput [(ngModel)]="password" name="password" type="password" required>
         </mat-form-field>
 
@@ -21,12 +21,12 @@
         </div>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="full-width">
-          {{ loading ? 'Connexion...' : 'Se connecter' }}
+          {{ loading ? 'Logging in...' : 'Login' }}
         </button>
       </form>
 
       <div class="signup-link">
-        <p>Pas encore de compte? <a routerLink="/admin/signup">S'inscrire</a></p>
+        <p>No account yet? <a routerLink="/admin/signup">Sign up</a></p>
       </div>
     </mat-card-content>
   </mat-card>

@@ -7,20 +7,20 @@
     <mat-nav-list>
       <mat-list-item (click)="navigateTo('/admin/dashboard/orders')" class="submenu-item">
         <mat-icon matListItemIcon>local_shipping</mat-icon>
-        <span matListItemTitle>Commandes</span>
+        <span matListItemTitle>Orders</span>
       </mat-list-item>
       <mat-list-item (click)="toggleProductsSubmenu()" [class.active]="showProductsSubmenu">
         <mat-icon matListItemIcon>shopping_cart</mat-icon>
-        <span matListItemTitle>Produits</span>
+        <span matListItemTitle>Products</span>
         <mat-icon matListItemMeta>{{ showProductsSubmenu ? 'expand_less' : 'expand_more' }}</mat-icon>
       </mat-list-item>
 
       <div *ngIf="showProductsSubmenu" class="submenu">
         <mat-list-item (click)="navigateTo('/admin/dashboard/products')" class="submenu-item">
-          <span matListItemTitle>Liste des produits</span>
+          <span matListItemTitle>Products List</span>
         </mat-list-item>
         <mat-list-item (click)="navigateTo('/admin/dashboard/products/add')" class="submenu-item">
-          <span matListItemTitle>Ajouter un produit</span>
+          <span matListItemTitle>Add Product</span>
         </mat-list-item>
       </div>
     </mat-nav-list>
@@ -32,7 +32,7 @@
         <mat-icon>menu</mat-icon>
       </button>
       <span class="spacer"></span>
-      <button mat-icon-button (click)="logout()" matTooltip="Déconnexion">
+      <button mat-icon-button (click)="logout()" matTooltip="Logout">
         <mat-icon>logout</mat-icon>
       </button>
     </mat-toolbar>

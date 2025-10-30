@@ -3,8 +3,8 @@
     <!-- Left Section -->
     <div class="left-section">
       <div class="content">
-        <h1>Bienvenue</h1>
-        <p>Créez votre compte administrateur pour accéder à la plateforme de gestion Jovoco.</p>
+        <h1>Welcome</h1>
+        <p>Create your admin account to access the Jovoco management platform.</p>
       </div>
       <div class="decoration"></div>
     </div>
@@ -12,7 +12,7 @@
     <!-- Right Section -->
     <div class="right-section">
       <div class="form-container">
-        <h2>CRÉER UN COMPTE</h2>
+        <h2>CREATE ACCOUNT</h2>
 
         <div *ngIf="error" class="alert alert-error">
           {{ error }}
@@ -28,7 +28,7 @@
               type="text"
               [(ngModel)]="name"
               name="name"
-              placeholder="Nom complet"
+              placeholder="Full Name"
               class="input-field"
               required
             />
@@ -50,7 +50,7 @@
               type="password"
               [(ngModel)]="password"
               name="password"
-              placeholder="Mot de passe"
+              placeholder="Password"
               class="input-field"
               required
             />
@@ -61,7 +61,7 @@
               type="password"
               [(ngModel)]="confirmPassword"
               name="confirmPassword"
-              placeholder="Confirmer le mot de passe"
+              placeholder="Confirm Password"
               class="input-field"
               required
             />
@@ -72,12 +72,12 @@
             class="submit-btn"
             [disabled]="loading"
           >
-            {{ loading ? 'Création en cours...' : 'S\'INSCRIRE' }}
+            {{ loading ? 'Creating...' : 'SIGN UP' }}
           </button>
         </form>
 
         <div class="login-link">
-          <p>Vous avez déjà un compte? <a routerLink="/admin/login">Se connecter</a></p>
+          <p>Already have an account? <a routerLink="/admin/login">Login</a></p>
         </div>
       </div>
     </div>
