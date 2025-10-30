@@ -1,8 +1,10 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 
 interface Product {
@@ -19,7 +21,7 @@ interface Product {
 @Component({
     selector: 'app-catalog',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, RouterLink, MatIconModule],
     templateUrl: './catalog.component.html',
     styleUrls: ['./catalog.component.css']
 })
@@ -40,7 +42,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     private subscription: Subscription | null = null;
     private queryParamSubscription: Subscription | null = null;
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private ngZone: NgZone) { }
+    constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         // Écouter les changements de query params
@@ -69,9 +71,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.allProducts = datas;
             this.extractCategories();
             this.applyFilters();
-            this.loading = false;
             console.log("was set to", this.loading);
         });
+        this.loading = false;
     }
 
     extractCategories(): void {
@@ -130,6 +132,11 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
     addToCart(product: Product): void {
         console.log('Ajouter au panier:', product);
+        // À implémenter
+    }
+
+    addToWishlist(product: Product): void {
+        console.log('Ajouter à la wishlist:', product);
         // À implémenter
     }
 }

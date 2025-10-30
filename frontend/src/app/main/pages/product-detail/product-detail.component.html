@@ -1,0 +1,129 @@
+<div class="product-detail-container">
+  <!-- Back Button -->
+  <div class="back-button">
+    <button (click)="goBack()" class="btn-back">
+      <mat-icon>arrow_back</mat-icon>
+      Retour au catalogue
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading">
+      <p>Chargement du produit...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error) {
+    <div class="alert alert-error">
+      {{ error }}
+    </div>
+  }
+
+  <!-- Product Detail -->
+  @if (product && !loading) {
+    <div class="product-detail">
+      <!-- Left: Product Image -->
+      <div class="product-image-section">
+        <div class="product-image-main">
+          @if (product.imageUrl) {
+            <img [src]="product.imageUrl" [alt]="product.name" />
+          } @else {
+            <div class="no-image">
+              <span>Pas d'image</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Right: Product Info -->
+      <div class="product-info-section">
+        <!-- Rating -->
+        <div class="rating">
+          <span class="stars">★★★★★</span>
+          <span class="reviews">(0 avis)</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="product-title">{{ product.name }}</h1>
+
+        <!-- Category -->
+        @if (product.category) {
+          <p class="product-category">{{ product.category }}</p>
+        }
+
+        <!-- Price -->
+        <div class="price-section">
+          <span class="price">{{ formatPrice(product.price) }}</span>
+          <span class="stock" [class.out-of-stock]="product.stockQuantity === 0">
+            @if (product.stockQuantity > 0) {
+              En stock ({{ product.stockQuantity }} disponibles)
+            } @else {
+              Rupture de stock
+            }
+          </span>
+        </div>
+
+        <!-- Description -->
+        @if (product.description) {
+          <div class="description">
+            <h3>Description</h3>
+            <p>{{ product.description }}</p>
+          </div>
+        }
+
+        <!-- Quantity & Actions -->
+        <div class="actions-section">
+          <div class="quantity-selector">
+            <label>Quantité:</label>
+            <div class="quantity-control">
+              <button (click)="decreaseQuantity()" class="btn-qty">−</button>
+              <input type="number" [(ngModel)]="quantity" min="1" [max]="product.stockQuantity" />
+              <button (click)="increaseQuantity()" class="btn-qty">+</button>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            @if (product.stockQuantity > 0) {
+              <button 
+                class="btn btn-add-cart" 
+                (click)="addToCart()">
+                <mat-icon>shopping_cart</mat-icon>
+                Ajouter au panier
+              </button>
+              <button 
+                class="btn btn-buy-now" 
+                (click)="buyNow()">
+                Acheter maintenant
+              </button>
+            } @else {
+              <button 
+                class="btn btn-wishlist" 
+                (click)="addToWishlist()">
+                <mat-icon>favorite</mat-icon>
+                Add to Wishlist
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+          <div class="feature">
+            <mat-icon>local_shipping</mat-icon>
+            <span>Livraison gratuite</span>
+          </div>
+          <div class="feature">
+            <mat-icon>assignment_return</mat-icon>
+            <span>Retour gratuit</span>
+          </div>
+          <div class="feature">
+            <mat-icon>verified_user</mat-icon>
+            <span>Garantie 2 ans</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
