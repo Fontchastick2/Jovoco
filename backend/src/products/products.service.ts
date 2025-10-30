@@ -8,10 +8,9 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private productsRepository: Repository<Product>,
-  ) {}
+  ) { }
 
   async create(product: Partial<Product>): Promise<Product> {
-    console.log('Creating product with data:', product);
     const newProduct = this.productsRepository.create(product);
     const savedProduct = await this.productsRepository.save(newProduct);
     return this.findById(savedProduct.productId) as Promise<Product>;
