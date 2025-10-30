@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Angular Material Prebuilt Themes */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Material Icons */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
+
+/* Roboto Font for Material Design */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Global Styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  background-color: #fafafa;
+}
