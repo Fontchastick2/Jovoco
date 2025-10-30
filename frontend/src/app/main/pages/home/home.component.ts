@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrderService } from '../../../services/order.service';
 
 interface Product {
@@ -61,7 +62,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -104,8 +106,10 @@ export class HomeComponent implements OnInit {
     const index = this.wishlist.indexOf(product.productId);
     if (index > -1) {
       this.wishlist.splice(index, 1);
+      this.snackBar.open(`${product.name} removed from wishlist`, 'Close', { duration: 3000 });
     } else {
       this.wishlist.push(product.productId);
+      this.snackBar.open(`${product.name} added to wishlist`, 'Close', { duration: 3000 });
     }
   }
 

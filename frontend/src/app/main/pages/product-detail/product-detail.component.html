@@ -3,14 +3,14 @@
   <div class="back-button">
     <button (click)="goBack()" class="btn-back">
       <mat-icon>arrow_back</mat-icon>
-      Retour au catalogue
+      Back to Catalog
     </button>
   </div>
 
   <!-- Loading State -->
   @if (loading) {
     <div class="loading">
-      <p>Chargement du produit...</p>
+      <p>Loading product...</p>
     </div>
   }
 
@@ -31,7 +31,7 @@
             <img [src]="product.imageUrl" [alt]="product.name" />
           } @else {
             <div class="no-image">
-              <span>Pas d'image</span>
+              <span>No image</span>
             </div>
           }
         </div>
@@ -42,7 +42,7 @@
         <!-- Rating -->
         <div class="rating">
           <span class="stars">★★★★★</span>
-          <span class="reviews">(0 avis)</span>
+          <span class="reviews">(0 reviews)</span>
         </div>
 
         <!-- Title -->
@@ -58,9 +58,9 @@
           <span class="price">{{ formatPrice(product.price) }}</span>
           <span class="stock" [class.out-of-stock]="product.stockQuantity === 0">
             @if (product.stockQuantity > 0) {
-              En stock ({{ product.stockQuantity }} disponibles)
+              In Stock ({{ product.stockQuantity }} available)
             } @else {
-              Rupture de stock
+              Out of Stock
             }
           </span>
         </div>
@@ -76,7 +76,7 @@
         <!-- Quantity & Actions -->
         <div class="actions-section">
           <div class="quantity-selector">
-            <label>Quantité:</label>
+            <label>Quantity:</label>
             <div class="quantity-control">
               <button (click)="decreaseQuantity()" class="btn-qty">−</button>
               <input type="number" [(ngModel)]="quantity" min="1" [max]="product.stockQuantity" />
@@ -90,12 +90,12 @@
                 class="btn btn-add-cart" 
                 (click)="addToCart()">
                 <mat-icon>shopping_cart</mat-icon>
-                Ajouter au panier
+                Add to Cart
               </button>
               <button 
                 class="btn btn-buy-now" 
                 (click)="buyNow()">
-                Acheter maintenant
+                Buy Now
               </button>
             } @else {
               <button 
@@ -112,15 +112,15 @@
         <div class="features">
           <div class="feature">
             <mat-icon>local_shipping</mat-icon>
-            <span>Livraison gratuite</span>
+            <span>Free Shipping</span>
           </div>
           <div class="feature">
             <mat-icon>assignment_return</mat-icon>
-            <span>Retour gratuit</span>
+            <span>Free Returns</span>
           </div>
           <div class="feature">
             <mat-icon>verified_user</mat-icon>
-            <span>Garantie 2 ans</span>
+            <span>2 Year Warranty</span>
           </div>
         </div>
       </div>

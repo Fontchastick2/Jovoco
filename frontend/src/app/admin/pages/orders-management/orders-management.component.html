@@ -47,7 +47,7 @@
       <!-- Order Items -->
       <div class="order-details">
         <div class="items-header" (click)="toggleOrderItems(order.orderId)">
-          <h4>Items ({{ order.items?.length || 0 }})</h4>
+          <h4>Items ({{ order.items.length || 0 }})</h4>
           <mat-icon class="expand-icon" [class.expanded]="isOrderExpanded(order.orderId)">
             {{ isOrderExpanded(order.orderId) ? 'expand_less' : 'expand_more' }}
           </mat-icon>

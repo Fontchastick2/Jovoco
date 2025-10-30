@@ -70,7 +70,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
                 this.cd.markForCheck();
             },
             error: (err) => {
-                this.error = 'Produit non trouvé';
+                this.error = 'Product not found';
                 console.error(err);
                 this.loading = false;
                 this.cd.markForCheck();
@@ -80,22 +80,22 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
     addToCart(): void {
         if (this.product) {
-            console.log(`Ajouter ${this.quantity}x ${this.product.name} au panier`);
-            // À implémenter
+            console.log(`Add ${this.quantity}x ${this.product.name} to cart`);
+            // To implement
         }
     }
 
     buyNow(): void {
         if (this.product) {
-            console.log(`Acheter maintenant: ${this.quantity}x ${this.product.name}`);
-            // À implémenter
+            console.log(`Buy now: ${this.quantity}x ${this.product.name}`);
+            // To implement
         }
     }
 
     addToWishlist(): void {
         if (this.product) {
-            console.log(`Ajouter ${this.product.name} à la wishlist`);
-            // À implémenter
+            console.log(`Add ${this.product.name} to wishlist`);
+            // To implement
         }
     }
 
@@ -104,9 +104,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     }
 
     formatPrice(price: number): string {
-        return new Intl.NumberFormat('fr-FR', {
+        return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'EUR'
+            currency: 'USD'
         }).format(price);
     }
 

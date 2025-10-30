@@ -115,9 +115,11 @@ export class OrderService {
                     console.log('Order item added:', product.name);
                     this.currentOrder = response;
                     this.orderSubject.next(response.items || []);
+                    this.snackBar.open(`${product.name} added to cart`, 'Close', { duration: 3000 });
                 },
                 error: (err) => {
                     console.error('Error adding order item:', err);
+                    this.snackBar.open('Error adding item to cart', 'Close', { duration: 3000 });
                 }
             });
         });
@@ -149,9 +151,11 @@ export class OrderService {
                 console.log('Item removed from cart:', productId);
                 this.currentOrder = response;
                 this.orderSubject.next(response.items || []);
+                this.snackBar.open('Item removed from cart', 'Close', { duration: 3000 });
             },
             error: (err) => {
                 console.error('Error removing item from cart:', err);
+                this.snackBar.open('Error removing item', 'Close', { duration: 3000 });
             }
         });
     }
@@ -159,6 +163,7 @@ export class OrderService {
     checkout(): void {
         if (!this.currentOrder) {
             console.error('No current order');
+            this.snackBar.open('No items in cart', 'Close', { duration: 3000 });
             return;
         }
 
@@ -168,10 +173,12 @@ export class OrderService {
                 console.log('Order checked out:', this.currentOrder?.orderId);
                 this.currentOrder = response;
                 this.orderSubject.next(response.items || []);
+                this.snackBar.open('Order placed successfully!', 'Close', { duration: 3000 });
                 this.checkoutSuccess$.next(true);
             },
             error: (err) => {
                 console.error('Error checking out order:', err);
+                this.snackBar.open('Error placing order', 'Close', { duration: 3000 });
                 this.checkoutSuccess$.next(false);
             }
         });
