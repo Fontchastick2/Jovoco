@@ -4,6 +4,7 @@ import { CatalogComponent } from './pages/catalog/catalog.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { MainComponent } from './main.component';
+import { AuthGuard } from '../auth/auth.guard';
 
 export const MAIN_ROUTES: Routes = [
   {
@@ -12,7 +13,7 @@ export const MAIN_ROUTES: Routes = [
     children: [
       { path: 'catalog', component: CatalogComponent },
       { path: 'catalog/:articleId', component: ProductDetailComponent },
-      { path: 'orders', component: OrdersComponent },
+      { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard] },
       { path: 'home', component: HomeComponent },
       { path: '', redirectTo: 'catalog', pathMatch: 'full' }
     ]
