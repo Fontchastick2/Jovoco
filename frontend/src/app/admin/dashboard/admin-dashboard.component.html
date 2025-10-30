@@ -9,6 +9,10 @@
         <mat-icon matListItemIcon>people</mat-icon>
         <span matListItemTitle>Utilisateurs</span>
       </mat-list-item>
+      <mat-list-item (click)="navigateTo('products')" [class.active]="currentPage === 'products'">
+        <mat-icon matListItemIcon>shopping_cart</mat-icon>
+        <span matListItemTitle>Produits</span>
+      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -25,6 +29,7 @@
 
     <div class="content">
       <app-admin-users-list *ngIf="currentPage === 'users'"></app-admin-users-list>
+      <app-admin-products-list *ngIf="currentPage === 'products'"></app-admin-products-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

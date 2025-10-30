@@ -1,0 +1,83 @@
+.products-container {
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.error-message {
+  color: #f44336;
+  padding: 12px;
+  background-color: #ffebee;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.table-container {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table th {
+  background-color: #f5f5f5;
+  font-weight: 500;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.products-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.products-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.stock-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.stock-badge.low {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+::ng-deep .mat-mdc-paginator {
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
