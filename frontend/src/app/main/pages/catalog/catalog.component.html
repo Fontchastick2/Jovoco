@@ -38,9 +38,11 @@
     <div class="categories-list">
       <h3>Catégories</h3>
       <ul>
-        <li *ngFor="let cat of categories">
+        @for (cat of categories; track $index) {
+        <li>
           <a href="#" (click)="selectedCategory = cat; onFilterChange(); $event.preventDefault()">{{ cat }}</a>
         </li>
+        }
       </ul>
     </div>
   </aside>
@@ -48,29 +50,43 @@
   <!-- Products Section -->
   <section class="products-section">
     <div class="products-header">
-      <h2>Produits ({{ filteredProducts.length }})</h2>
+      <h2>Produits ({{ filteredProducts.length }}) {{ loading }}</h2>
     </div>
 
-    <div *ngIf="error" class="alert alert-error">
+    @if (error) {
+    <div class="alert alert-error">
       {{ error }}
     </div>
+    }
 
-    <div *ngIf="loading" class="loading">
-      <p>Chargement des produits...</p>
+    @if (loading) {
+    <div class="loading">
+      <p>Chargement des produits... {{ loading }}</p>
     </div>
+    }
 
-    <div *ngIf="!loading && filteredProducts.length > 0" class="products-grid">
-      <div *ngFor="let product of filteredProducts" class="product-card">
+    @if (!loading && filteredProducts.length > 0) {
+    <div class="products-grid">
+      @for (product of filteredProducts; track product.productId) {
+      <div class="product-card">
         <div class="product-image">
-          <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name" />
-          <div *ngIf="!product.imageUrl" class="no-image">
+          @if (product.imageUrl) {
+          <img [src]="product.imageUrl" [alt]="product.name" />
+          }
+          @if (!product.imageUrl) {
+          <div class="no-image">
             <span>Pas d'image</span>
           </div>
-          <div class="product-badge" *ngIf="product.stockQuantity === 0">Rupture</div>
+          }
+          @if (product.stockQuantity === 0) {
+          <div class="product-badge">Rupture</div>
+          }
         </div>
         <div class="product-info">
           <h4>{{ product.name }}</h4>
-          <p class="category" *ngIf="product.category">{{ product.category }}</p>
+          @if (product.category) {
+          <p class="category">{{ product.category }}</p>
+          }
           <div class="rating">
             <span class="stars">★★★★★</span>
             <span class="reviews">(0 avis)</span>
@@ -81,10 +97,14 @@
           </button>
         </div>
       </div>
+      }
     </div>
+    }
 
-    <div *ngIf="!loading && filteredProducts.length === 0" class="no-products">
+    @if (!loading && filteredProducts.length === 0) {
+    <div class="no-products">
       <p>Aucun produit ne correspond à vos critères</p>
     </div>
+    }
   </section>
 </div>

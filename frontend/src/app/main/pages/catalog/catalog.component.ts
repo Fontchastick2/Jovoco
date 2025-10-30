@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 interface Product {
@@ -37,16 +38,26 @@ export class CatalogComponent implements OnInit, OnDestroy {
     categories: string[] = [];
     private apiUrl = 'http://localhost:3000';
     private subscription: Subscription | null = null;
+    private queryParamSubscription: Subscription | null = null;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private route: ActivatedRoute, private ngZone: NgZone) { }
 
     ngOnInit(): void {
-        this.loadProducts();
+        // Écouter les changements de query params
+        this.queryParamSubscription = this.route.queryParams.subscribe(params => {
+            if (params['search']) {
+                this.searchQuery = params['search'];
+            }
+            this.loadProducts();
+        });
     }
 
     ngOnDestroy(): void {
         if (this.subscription) {
             this.subscription.unsubscribe();
+        }
+        if (this.queryParamSubscription) {
+            this.queryParamSubscription.unsubscribe();
         }
     }
 
@@ -54,18 +65,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.error = '';
 
-        this.subscription = this.http.get<Product[]>(`${this.apiUrl}/products`).subscribe({
-            next: (data) => {
-                this.allProducts = data;
-                this.extractCategories();
-                this.applyFilters();
-                this.loading = false;
-            },
-            error: (err) => {
-                this.error = 'Erreur lors du chargement des produits';
-                console.error(err);
-                this.loading = false;
-            }
+        this.subscription = this.http.get<Product[]>(`${this.apiUrl}/products`).subscribe(datas => {
+            this.allProducts = datas;
+            this.extractCategories();
+            this.applyFilters();
+            this.loading = false;
+            console.log("was set to", this.loading);
         });
     }
 
@@ -84,15 +89,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
         // Filtre par prix
         filtered = filtered.filter(p => p.price <= this.priceRange);
-
-        // Filtre par recherche
-        if (this.searchQuery) {
-            const query = this.searchQuery.toLowerCase();
-            filtered = filtered.filter(p =>
-                p.name.toLowerCase().includes(query) ||
-                p.description?.toLowerCase().includes(query)
-            );
-        }
 
         // Tri
         switch (this.sortBy) {
