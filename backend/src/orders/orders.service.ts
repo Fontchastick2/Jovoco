@@ -21,7 +21,10 @@ export class OrdersService {
   }
 
   async findById(orderId: string): Promise<Order | null> {
-    return this.ordersRepository.findOne({ where: { orderId } });
+    return this.ordersRepository.findOne({
+      where: { orderId },
+      relations: ['items', 'items.product']
+    });
   }
 
   async findByStatus(status: string): Promise<Order[]> {
@@ -45,7 +48,8 @@ export class OrdersService {
   async getCart(userId: string): Promise<Order> {
     // Chercher un order existant avec le status "in_cart"
     let cart = await this.ordersRepository.findOne({
-      where: { userId, status: 'in_cart' }
+      where: { userId, status: 'in_cart' },
+      relations: ['items', 'items.product']
     });
 
     // Si pas de panier, en créer un

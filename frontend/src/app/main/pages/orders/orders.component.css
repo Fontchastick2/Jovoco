@@ -101,6 +101,23 @@
   gap: 1rem;
 }
 
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.product-category {
+  font-size: 0.85rem;
+  color: #999;
+}
+
 .product-image {
   width: 60px;
   height: 60px;

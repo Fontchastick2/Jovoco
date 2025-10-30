@@ -151,8 +151,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     getCartTotal(): number {
-        // return this.orderService.getCartTotal();
-        return 0;
+        return this.orderService.getCartTotal();
     }
 
     clearCart(): void {
