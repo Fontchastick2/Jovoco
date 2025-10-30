@@ -1,0 +1,60 @@
+<div class="home-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <h1>JOVOCO</h1>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Rechercher un produit...">
+        <button class="search-btn">🔍</button>
+      </div>
+      <nav class="nav">
+        <a href="/main/orders" class="nav-link">
+          <mat-icon>shopping_cart</mat-icon>
+          <span>Orders</span>
+        </a>
+        <a href="#" class="nav-link">
+          <mat-icon>person</mat-icon>
+          <span>Login</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Router Outlet for Child Routes -->
+  <router-outlet></router-outlet>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>À propos</h4>
+        <ul>
+          <li><a href="#">Qui sommes-nous</a></li>
+          <li><a href="#">Nos valeurs</a></li>
+          <li><a href="#">Carrières</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Livraison</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Conditions</a></li>
+          <li><a href="#">Confidentialité</a></li>
+          <li><a href="#">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Jovoco Store. Tous droits réservés.</p>
+    </div>
+  </footer>
+</div>

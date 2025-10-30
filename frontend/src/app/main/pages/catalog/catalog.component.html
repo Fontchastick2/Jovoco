@@ -1,0 +1,90 @@
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Sidebar Filters -->
+  <aside class="sidebar">
+    <div class="filter-section">
+      <h3>Filtres</h3>
+
+      <!-- Categories -->
+      <div class="filter-group">
+        <label>Catégorie</label>
+        <select [(ngModel)]="selectedCategory" (change)="onFilterChange()">
+          <option value="">Toutes les catégories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <!-- Price Range -->
+      <div class="filter-group">
+        <label>Prix maximum: {{ formatPrice(priceRange) }}</label>
+        <input type="range" min="0" max="1000" [(ngModel)]="priceRange" (input)="onFilterChange()" class="price-slider">
+      </div>
+
+      <!-- Sort -->
+      <div class="filter-group">
+        <label>Trier par</label>
+        <select [(ngModel)]="sortBy" (change)="onFilterChange()">
+          <option value="newest">Plus récent</option>
+          <option value="price-asc">Prix croissant</option>
+          <option value="price-desc">Prix décroissant</option>
+          <option value="name">Nom (A-Z)</option>
+        </select>
+      </div>
+
+      <button class="btn btn-reset" (click)="resetFilters()">Réinitialiser</button>
+    </div>
+
+    <!-- Categories List -->
+    <div class="categories-list">
+      <h3>Catégories</h3>
+      <ul>
+        <li *ngFor="let cat of categories">
+          <a href="#" (click)="selectedCategory = cat; onFilterChange(); $event.preventDefault()">{{ cat }}</a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Products Section -->
+  <section class="products-section">
+    <div class="products-header">
+      <h2>Produits ({{ filteredProducts.length }})</h2>
+    </div>
+
+    <div *ngIf="error" class="alert alert-error">
+      {{ error }}
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <p>Chargement des produits...</p>
+    </div>
+
+    <div *ngIf="!loading && filteredProducts.length > 0" class="products-grid">
+      <div *ngFor="let product of filteredProducts" class="product-card">
+        <div class="product-image">
+          <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name" />
+          <div *ngIf="!product.imageUrl" class="no-image">
+            <span>Pas d'image</span>
+          </div>
+          <div class="product-badge" *ngIf="product.stockQuantity === 0">Rupture</div>
+        </div>
+        <div class="product-info">
+          <h4>{{ product.name }}</h4>
+          <p class="category" *ngIf="product.category">{{ product.category }}</p>
+          <div class="rating">
+            <span class="stars">★★★★★</span>
+            <span class="reviews">(0 avis)</span>
+          </div>
+          <p class="price">{{ formatPrice(product.price) }}</p>
+          <button class="btn btn-primary" (click)="addToCart(product)" [disabled]="product.stockQuantity === 0">
+            Ajouter au panier
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && filteredProducts.length === 0" class="no-products">
+      <p>Aucun produit ne correspond à vos critères</p>
+    </div>
+  </section>
+</div>
