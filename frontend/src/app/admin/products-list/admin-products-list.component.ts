@@ -63,11 +63,14 @@ export class AdminProductsListComponent implements OnInit {
                 this.allProducts = data;
                 this.updateDisplayedProducts();
                 this.loading = false;
+                this.cdr.markForCheck();
+
             },
             error: (err) => {
                 this.error = 'Erreur lors du chargement des produits';
                 this.loading = false;
                 console.error(err);
+                this.cdr.markForCheck();
             }
         });
     }

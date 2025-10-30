@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -42,7 +42,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     private subscription: Subscription | null = null;
     private queryParamSubscription: Subscription | null = null;
 
-    constructor(private http: HttpClient, private route: ActivatedRoute) { }
+    constructor(private http: HttpClient, private route: ActivatedRoute, private cd: ChangeDetectorRef) { }
 
     ngOnInit(): void {
         // Écouter les changements de query params
@@ -71,9 +71,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.allProducts = datas;
             this.extractCategories();
             this.applyFilters();
-            console.log("was set to", this.loading);
+            this.loading = false;
+            this.cd.markForCheck();
+
         });
-        this.loading = false;
     }
 
     extractCategories(): void {

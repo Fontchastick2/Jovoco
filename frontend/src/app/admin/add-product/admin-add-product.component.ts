@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -38,12 +38,13 @@ export class AdminAddProductComponent implements OnInit {
         private http: HttpClient,
         private router: Router,
         private fb: FormBuilder,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private cd: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
         this.initializeForm();
-        
+
         // Vérifier si on est en mode édition
         this.route.params.subscribe(params => {
             if (params['id']) {
@@ -104,6 +105,8 @@ export class AdminAddProductComponent implements OnInit {
                 error: (err) => {
                     this.error = err.error?.message || 'Erreur lors de la mise à jour du produit';
                     this.loading = false;
+                    this.cd.markForCheck();
+
                 }
             });
         } else {
@@ -118,6 +121,7 @@ export class AdminAddProductComponent implements OnInit {
                 error: (err) => {
                     this.error = err.error?.message || 'Erreur lors de la création du produit';
                     this.loading = false;
+                    this.cd.markForCheck();
                 }
             });
         }

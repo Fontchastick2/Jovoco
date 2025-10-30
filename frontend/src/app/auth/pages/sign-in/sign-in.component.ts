@@ -77,7 +77,6 @@ export class SignInComponent implements OnInit, OnDestroy {
                 this.error = err.error?.message || 'Email ou mot de passe incorrect';
                 this.loading = false;
                 this.cd.markForCheck();
-
             }
         });
     }

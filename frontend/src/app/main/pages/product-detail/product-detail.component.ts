@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -29,7 +29,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     loading = false;
     error = '';
     quantity = 1;
-    
+
     private apiUrl = 'http://localhost:3000';
     private subscription: Subscription | null = null;
     private routeSubscription: Subscription | null = null;
@@ -37,7 +37,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private cd: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
@@ -66,11 +67,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             next: (data) => {
                 this.product = data;
                 this.loading = false;
+                this.cd.markForCheck();
             },
             error: (err) => {
                 this.error = 'Produit non trouvé';
                 console.error(err);
                 this.loading = false;
+                this.cd.markForCheck();
             }
         });
     }
