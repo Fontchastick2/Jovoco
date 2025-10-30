@@ -17,40 +17,40 @@
         {{ success }}
       </div>
 
-      <form (ngSubmit)="addProduct()">
+      <form [formGroup]="productForm" (ngSubmit)="addProduct()">
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Nom du produit *</mat-label>
-          <input matInput [(ngModel)]="name" name="name" required>
+          <input matInput formControlName="name" required>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Description</mat-label>
-          <textarea matInput [(ngModel)]="description" name="description" rows="4"></textarea>
+          <textarea matInput formControlName="description" rows="4"></textarea>
         </mat-form-field>
 
         <div class="row">
           <mat-form-field appearance="fill" class="half-width">
             <mat-label>Prix *</mat-label>
-            <input matInput type="number" [(ngModel)]="price" name="price" step="0.01" required>
+            <input matInput type="number" formControlName="price" step="0.01" required>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="half-width">
             <mat-label>Stock</mat-label>
-            <input matInput type="number" [(ngModel)]="stockQuantity" name="stockQuantity">
+            <input matInput type="number" formControlName="stockQuantity">
           </mat-form-field>
         </div>
 
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Catégorie</mat-label>
-          <input matInput [(ngModel)]="category" name="category">
+          <input matInput formControlName="category">
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>URL de l'image</mat-label>
-          <input matInput [(ngModel)]="imageUrl" name="imageUrl" placeholder="https://...">
+          <input matInput formControlName="imageUrl" placeholder="https://...">
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="full-width">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || productForm.invalid" class="full-width">
           {{ loading ? 'Création en cours...' : 'Créer le produit' }}
         </button>
       </form>
@@ -68,10 +68,10 @@
           </div>
         </div>
         <div class="product-info">
-          <h4>{{ name || 'Nom du produit' }}</h4>
-          <p class="category">{{ category || 'Catégorie' }}</p>
-          <p class="price">{{ price ? (price | currency: 'EUR') : '0,00 €' }}</p>
-          <p class="stock">Stock: {{ stockQuantity }}</p>
+          <h4>{{ productForm.get('name')?.value || 'Nom du produit' }}</h4>
+          <p class="category">{{ productForm.get('category')?.value || 'Catégorie' }}</p>
+          <p class="price">{{ productForm.get('price')?.value ? (productForm.get('price')?.value | currency: 'EUR') : '0,00 €' }}</p>
+          <p class="stock">Stock: {{ productForm.get('stockQuantity')?.value }}</p>
         </div>
       </div>
     </div>
