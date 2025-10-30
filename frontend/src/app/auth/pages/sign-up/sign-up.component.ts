@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
@@ -25,12 +25,18 @@ export class SignUpComponent implements OnInit, OnDestroy {
     private apiUrl = 'http://localhost:3000';
     private subscription: Subscription | null = null;
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) { }
 
     ngOnInit(): void {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            this.router.navigate(['/main/catalog']);
+        if (isPlatformBrowser(this.platformId)) {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                this.router.navigate(['/main/catalog']);
+            }
         }
     }
 
@@ -70,7 +76,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         }).subscribe({
             next: (response: any) => {
                 console.log('Inscription réussie:', response);
-                if (response.token) {
+                if (response.token && isPlatformBrowser(this.platformId)) {
                     localStorage.setItem('authToken', response.token);
                     localStorage.setItem('user', JSON.stringify(response.user));
                 }

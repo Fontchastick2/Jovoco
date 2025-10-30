@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
@@ -23,13 +23,20 @@ export class SignInComponent implements OnInit, OnDestroy {
     private apiUrl = 'http://localhost:3000';
     private subscription: Subscription | null = null;
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private cd: ChangeDetectorRef,
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) { }
 
     ngOnInit(): void {
         // Vérifier si l'utilisateur est déjà connecté
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            this.router.navigate(['/main/catalog']);
+        if (isPlatformBrowser(this.platformId)) {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                this.router.navigate(['/main/catalog']);
+            }
         }
     }
 
@@ -58,7 +65,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         }).subscribe({
             next: (response: any) => {
                 console.log('Connexion réussie:', response);
-                if (response.token) {
+                if (response.token && isPlatformBrowser(this.platformId)) {
                     localStorage.setItem('authToken', response.token);
                     localStorage.setItem('user', JSON.stringify(response.user));
                 }
@@ -69,6 +76,8 @@ export class SignInComponent implements OnInit, OnDestroy {
                 console.error('Erreur de connexion:', err);
                 this.error = err.error?.message || 'Email ou mot de passe incorrect';
                 this.loading = false;
+                this.cd.markForCheck();
+
             }
         });
     }
