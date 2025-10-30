@@ -8,22 +8,33 @@ import { AuthService } from '../../../services/auth.service';
 import { UserService } from '../../../services/user.service';
 import { Subscription } from 'rxjs';
 
-interface OrderItem {
+interface Product {
     productId: string;
-    productName: string;
-    quantity: number;
+    name: string;
+    description: string;
     price: number;
+    stockQuantity: number;
+    category: string;
     imageUrl?: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+interface OrderItem {
+    orderItemId: string;
+    productId: string;
+    quantity: number;
+    orderId: string;
+    product?: Product;
 }
 
 interface Order {
     orderId: string;
-    customerName: string;
-    customerEmail: string;
-    totalAmount: number;
+    userId: string;
     status: string;
     items: OrderItem[];
-    createdAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 interface WishlistItem {
@@ -87,9 +98,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     loadOrders(): void {
         this.loading = true;
+        const userId = this.authService.getUserIdFromToken();
+        if (!userId) {
+            console.error('User not authenticated');
+            this.loading = false;
+            return;
+        }
+
         this.http.get<Order[]>(`${this.apiUrl}/orders`).subscribe({
             next: (data) => {
-                this.orders = data;
+                // Filtrer les orders qui ne sont pas "in_cart"
+                this.orders = data.filter(order => order.status !== 'in_cart');
                 this.loading = false;
                 this.cd.markForCheck();
             },
@@ -132,7 +151,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }).format(price);
     }
 
-    formatDate(date: string): string {
+    formatDate(date: string | Date): string {
         return new Date(date).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -142,30 +161,32 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     getStatusBadgeClass(status: string): string {
         switch (status) {
-            case 'pending':
-                return 'badge-pending';
-            case 'confirmed':
-                return 'badge-confirmed';
-            case 'shipped':
-                return 'badge-shipped';
+            case 'packing':
+                return 'badge-packing';
+            case 'in_delivery':
+                return 'badge-in_delivery';
             case 'delivered':
                 return 'badge-delivered';
-            case 'cancelled':
-                return 'badge-cancelled';
+            case 'returned':
+                return 'badge-returned';
             default:
-                return 'badge-pending';
+                return 'badge-packing';
         }
     }
 
     getStatusLabel(status: string): string {
         const labels: { [key: string]: string } = {
-            pending: 'Pending',
-            confirmed: 'Confirmed',
-            shipped: 'Shipped',
+            packing: 'Packing',
+            in_delivery: 'In Delivery',
             delivered: 'Delivered',
-            cancelled: 'Cancelled'
+            returned: 'Returned'
         };
         return labels[status] || status;
+    }
+
+    getOrderTotal(order: Order): number {
+        if (!order.items) return 0;
+        return order.items.reduce((total, item) => total + (Number(item.product?.price || 0) * item.quantity), 0);
     }
 
     removeFromWishlist(productId: string): void {

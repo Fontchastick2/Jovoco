@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './order.entity';
+import { OrderItem } from './order-item.entity';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
+    @InjectRepository(OrderItem)
+    private orderItemRepository: Repository<OrderItem>,
   ) { }
 
   async create(order: Partial<Order>): Promise<Order> {
@@ -79,5 +82,16 @@ export class OrdersService {
     
     // Sauvegarder
     return this.ordersRepository.save(order);
+  }
+
+  async removeItemFromCart(orderId: string, productId: string): Promise<Order | null> {
+    // Supprimer directement l'item du repository
+    await this.orderItemRepository.delete({
+      orderId,
+      productId
+    });
+
+    // Retourner l'order mis à jour
+    return this.findById(orderId);
   }
 }

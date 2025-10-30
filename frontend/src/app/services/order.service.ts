@@ -135,4 +135,42 @@ export class OrderService {
         return this.currentOrder.items.reduce((total, item) => total + item.quantity, 0);
     }
 
+    removeFromCart(productId: string): void {
+        if (!this.currentOrder) {
+            console.error('No current order');
+            return;
+        }
+
+        console.log('Removing item from cart:', productId);
+        this.http.delete(`${this.API_URL}/${this.currentOrder.orderId}/items/${productId}`).subscribe({
+            next: (response: any) => {
+                console.log('Item removed from cart:', productId);
+                this.currentOrder = response;
+                this.orderSubject.next(response.items || []);
+            },
+            error: (err) => {
+                console.error('Error removing item from cart:', err);
+            }
+        });
+    }
+
+    checkout(): void {
+        if (!this.currentOrder) {
+            console.error('No current order');
+            return;
+        }
+
+        console.log('Checking out order:', this.currentOrder.orderId);
+        this.http.post(`${this.API_URL}/${this.currentOrder.orderId}/checkout`, {}).subscribe({
+            next: (response: any) => {
+                console.log('Order checked out:', this.currentOrder?.orderId);
+                this.currentOrder = response;
+                this.orderSubject.next(response.items || []);
+            },
+            error: (err) => {
+                console.error('Error checking out order:', err);
+            }
+        });
+    }
+
 }

@@ -9,6 +9,10 @@
         <mat-icon matListItemIcon>people</mat-icon>
         <span matListItemTitle>Utilisateurs</span>
       </mat-list-item>
+      <mat-list-item (click)="navigateTo('/admin/dashboard/orders')" class="submenu-item">
+        <mat-icon matListItemIcon>local_shipping</mat-icon>
+        <span matListItemTitle>Commandes</span>
+      </mat-list-item>
       <mat-list-item (click)="toggleProductsSubmenu()" [class.active]="showProductsSubmenu">
         <mat-icon matListItemIcon>shopping_cart</mat-icon>
         <span matListItemTitle>Produits</span>

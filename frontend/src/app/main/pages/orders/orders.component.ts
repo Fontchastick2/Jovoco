@@ -141,7 +141,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     removeFromCart(productId: string): void {
-        // this.orderService.removeFromCart(productId);
+        this.orderService.removeFromCart(productId);
     }
 
     updateQuantity(productId: string, quantity: number): void {
@@ -162,10 +162,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
     checkout(): void {
         if (this.cartItems.length === 0) {
-            this.error = 'Le panier est vide';
+            this.error = 'Votre panier est vide';
             return;
         }
-        // TODO: Implémenter la logique de checkout
-        console.log('Checkout:', this.cartItems);
+        this.orderService.checkout();
     }
 }

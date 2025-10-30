@@ -5,6 +5,7 @@ import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
 import { AdminUsersListComponent } from './users-list/admin-users-list.component';
 import { AdminProductsListComponent } from './products-list/admin-products-list.component';
 import { AdminAddProductComponent } from './add-product/admin-add-product.component';
+import { OrdersManagementComponent } from './pages/orders-management/orders-management.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -17,6 +18,7 @@ export const ADMIN_ROUTES: Routes = [
         component: AdminDashboardComponent,
         children: [
           { path: 'users', component: AdminUsersListComponent },
+          { path: 'orders', component: OrdersManagementComponent },
           {
             path: 'products',
             children: [

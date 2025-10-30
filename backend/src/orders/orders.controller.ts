@@ -16,19 +16,14 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
-  @Get(':orderId')
-  async findById(@Param('orderId') orderId: string): Promise<Order | null> {
-    return this.ordersService.findById(orderId);
+  @Get('cart/:userId')
+  async getCart(@Param('userId') userId: string): Promise<Order> {
+    return this.ordersService.getCart(userId);
   }
 
   @Get('status/:status')
   async findByStatus(@Param('status') status: string): Promise<Order[]> {
     return this.ordersService.findByStatus(status);
-  }
-
-  @Get('cart/:userId')
-  async getCart(@Param('userId') userId: string): Promise<Order> {
-    return this.ordersService.getCart(userId);
   }
 
   @Post(':orderId/add-item')
@@ -37,6 +32,19 @@ export class OrdersController {
     @Body() body: { productId: string; quantity: number },
   ): Promise<Order | null> {
     return this.ordersService.addItemToCart(orderId, body.productId, body.quantity);
+  }
+
+  @Delete(':orderId/items/:productId')
+  async removeItemFromCart(
+    @Param('orderId') orderId: string,
+    @Param('productId') productId: string,
+  ): Promise<Order | null> {
+    return this.ordersService.removeItemFromCart(orderId, productId);
+  }
+
+  @Get(':orderId')
+  async findById(@Param('orderId') orderId: string): Promise<Order | null> {
+    return this.ordersService.findById(orderId);
   }
 
   @Put(':orderId')
@@ -53,6 +61,13 @@ export class OrdersController {
     @Body() body: { status: string },
   ): Promise<Order | null> {
     return this.ordersService.updateStatus(orderId, body.status);
+  }
+
+  @Post(':orderId/checkout')
+  async checkout(
+    @Param('orderId') orderId: string,
+  ): Promise<Order | null> {
+    return this.ordersService.updateStatus(orderId, 'packing');
   }
 
   @Delete(':orderId')

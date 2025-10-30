@@ -162,18 +162,18 @@
                         </div>
                     </div>
                     <div class="order-items">
-                        @for (item of order.items; track item.productId) {
+                        @for (item of order.items; track item.orderItemId) {
                         <div class="order-item">
-                            <span class="item-name">{{ item.productName }}</span>
+                            <span class="item-name">{{ item.product?.name }}</span>
                             <span class="item-qty">x{{ item.quantity }}</span>
-                            <span class="item-price">{{ formatPrice(item.price * item.quantity) }}</span>
+                            <span class="item-price">{{ formatPrice((item.product?.price || 0) * item.quantity) }}</span>
                         </div>
                         }
                     </div>
                     <div class="order-footer">
                         <div class="order-total">
                             <strong>Total:</strong>
-                            <span class="total-amount">{{ formatPrice(order.totalAmount) }}</span>
+                            <span class="total-amount">{{ formatPrice(getOrderTotal(order)) }}</span>
                         </div>
                     </div>
                 </div>

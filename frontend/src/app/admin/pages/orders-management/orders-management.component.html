@@ -1,0 +1,89 @@
+<div class="orders-management-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Orders Management</h1>
+    <button class="btn btn-primary" (click)="loadOrders()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading">
+    <mat-icon>hourglass_empty</mat-icon>
+    <p>Loading orders...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="alert alert-error">
+    {{ error }}
+  </div>
+
+  <!-- Orders List -->
+  <div *ngIf="!loading && orders.length > 0" class="orders-list">
+    <div *ngFor="let order of orders" class="order-card">
+      <!-- Order Header -->
+      <div class="order-header">
+        <div class="order-info">
+          <h3>Order #{{ order.orderId | slice:0:8 }}</h3>
+          <p class="order-date">{{ formatDate(order.createdAt) }}</p>
+          <p class="customer-id">User: {{ order.userId | slice:0:8 }}</p>
+        </div>
+
+        <div class="order-status">
+          <select [(ngModel)]="order.status" (change)="updateStatus(order, order.status)" class="status-select">
+            <option *ngFor="let status of statusOptions" [ngValue]="status">
+              {{ status | uppercase }}
+            </option>
+          </select>
+        </div>
+
+        <div class="order-total">
+          <p class="total-label">Total</p>
+          <p class="total-amount">{{ formatPrice(getOrderTotal(order)) }}</p>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="order-details">
+        <div class="items-header" (click)="toggleOrderItems(order.orderId)">
+          <h4>Items ({{ order.items?.length || 0 }})</h4>
+          <mat-icon class="expand-icon" [class.expanded]="isOrderExpanded(order.orderId)">
+            {{ isOrderExpanded(order.orderId) ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </div>
+        <div class="items-table" *ngIf="isOrderExpanded(order.orderId)">
+          <div class="table-header">
+            <div class="col-product">Product</div>
+            <div class="col-price">Price</div>
+            <div class="col-quantity">Qty</div>
+            <div class="col-subtotal">Subtotal</div>
+          </div>
+          <div *ngFor="let item of order.items" class="table-row">
+            <div class="col-product">
+              <div class="product-info">
+                <img *ngIf="item.product?.imageUrl" [src]="item.product?.imageUrl" [alt]="item.product?.name" class="product-image">
+                <div *ngIf="!item.product?.imageUrl" class="product-image-placeholder">
+                  <mat-icon>image</mat-icon>
+                </div>
+                <div class="product-details">
+                  <span class="product-name">{{ item.product?.name }}</span>
+                  <span class="product-category">{{ item.product?.category }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-price">{{ formatPrice(item.product?.price || 0) }}</div>
+            <div class="col-quantity">{{ item.quantity }}</div>
+            <div class="col-subtotal">{{ formatPrice((item.product?.price || 0) * item.quantity) }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Orders State -->
+  <div *ngIf="!loading && orders.length === 0" class="no-orders">
+    <mat-icon>inbox</mat-icon>
+    <p>No orders to manage</p>
+  </div>
+</div>
