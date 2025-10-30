@@ -51,7 +51,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        // Écouter les changements de query params
+        // Listen to query params changes
         this.queryParamSubscription = this.route.queryParams.subscribe(params => {
             if (params['search']) {
                 this.searchQuery = params['search'];
@@ -91,15 +91,15 @@ export class CatalogComponent implements OnInit, OnDestroy {
     applyFilters(): void {
         let filtered = this.allProducts;
 
-        // Filtre par catégorie
+        // Filter by category
         if (this.selectedCategory) {
             filtered = filtered.filter(p => p.category === this.selectedCategory);
         }
 
-        // Filtre par prix
+        // Filter by price
         filtered = filtered.filter(p => p.price <= this.priceRange);
 
-        // Tri
+        // Sort
         switch (this.sortBy) {
             case 'price-asc':
                 filtered.sort((a, b) => a.price - b.price);
@@ -142,7 +142,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }
 
     addToWishlist(product: Product): void {
-        console.log('Ajouter à la wishlist:', product);
-        // À implémenter
+        console.log('Add to wishlist:', product);
+        // To implement
     }
 }

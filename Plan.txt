@@ -1,5 +1,0 @@
-A simple and extendable service. 
-Should implement: Testing, translations, Separation of themes, schemas
-Frontend: Angular
-Backend: Nodejs
-DB: postgreSQL

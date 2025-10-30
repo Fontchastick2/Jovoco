@@ -3,40 +3,40 @@
   <!-- Sidebar Filters -->
   <aside class="sidebar">
     <div class="filter-section">
-      <h3>Filtres</h3>
+      <h3>Filters</h3>
 
       <!-- Categories -->
       <div class="filter-group">
-        <label>Catégorie</label>
+        <label>Category</label>
         <select [(ngModel)]="selectedCategory" (change)="onFilterChange()">
-          <option value="">Toutes les catégories</option>
+          <option value="">All Categories</option>
           <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
         </select>
       </div>
 
       <!-- Price Range -->
       <div class="filter-group">
-        <label>Prix maximum: {{ formatPrice(priceRange) }}</label>
+        <label>Max Price: {{ formatPrice(priceRange) }}</label>
         <input type="range" min="0" max="1000" [(ngModel)]="priceRange" (input)="onFilterChange()" class="price-slider">
       </div>
 
       <!-- Sort -->
       <div class="filter-group">
-        <label>Trier par</label>
+        <label>Sort By</label>
         <select [(ngModel)]="sortBy" (change)="onFilterChange()">
-          <option value="newest">Plus récent</option>
-          <option value="price-asc">Prix croissant</option>
-          <option value="price-desc">Prix décroissant</option>
-          <option value="name">Nom (A-Z)</option>
+          <option value="newest">Newest</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name">Name (A-Z)</option>
         </select>
       </div>
 
-      <button class="btn btn-reset" (click)="resetFilters()">Réinitialiser</button>
+      <button class="btn btn-reset" (click)="resetFilters()">Reset Filters</button>
     </div>
 
     <!-- Categories List -->
     <div class="categories-list">
-      <h3>Catégories</h3>
+      <h3>Categories</h3>
       <ul>
         @for (cat of categories; track $index) {
         <li>
@@ -50,7 +50,7 @@
   <!-- Products Section -->
   <section class="products-section">
     <div class="products-header">
-      <h2>Produits ({{ filteredProducts.length }})</h2>
+      <h2>Products ({{ filteredProducts.length }})</h2>
     </div>
 
     @if (error) {
@@ -61,7 +61,7 @@
 
     @if (loading) {
     <div class="loading">
-      <p>Chargement des produits...</p>
+      <p>Loading products...</p>
     </div>
     }
 
@@ -75,11 +75,11 @@
           }
           @if (!product.imageUrl) {
           <div class="no-image">
-            <span>Pas d'image</span>
+            <span>No image</span>
           </div>
           }
           @if (product.stockQuantity === 0) {
-          <div class="product-badge">Rupture</div>
+          <div class="product-badge">Out of Stock</div>
           }
         </div>
         <div class="product-info">
@@ -89,12 +89,12 @@
           }
           <div class="rating">
             <span class="stars">★★★★★</span>
-            <span class="reviews">(0 avis)</span>
+            <span class="reviews">(0 reviews)</span>
           </div>
           <p class="price">{{ formatPrice(product.price) }}</p>
           @if (product.stockQuantity > 0) {
           <button class="btn btn-primary" (click)="addToCart(product); $event.stopPropagation()">
-            Ajouter au panier
+            Add to Cart
           </button>
           } @else {
           <button class="btn btn-wishlist" (click)="addToWishlist(product); $event.stopPropagation()">
@@ -110,7 +110,7 @@
 
     @if (!loading && filteredProducts.length === 0) {
     <div class="no-products">
-      <p>Aucun produit ne correspond à vos critères</p>
+      <p>No products match your criteria</p>
     </div>
     }
   </section>
